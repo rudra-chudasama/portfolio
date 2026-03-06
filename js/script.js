@@ -175,6 +175,7 @@
             { id: "#main2", link: '#side h4 a[href="#main2"]' },
             { id: "#main3", link: '#side h4 a[href="#main3"]' },
             { id: "#projects-section", link: '#side h4 a[href="#projects-section"]' },
+            { id: "#certifications-section", link: '#side h4 a[href="#certifications-section"]' },
             { id: "#resume-section", link: '#side h4 a[href="#resume-section"]' },
             { id: "#contact-section", link: '#side h4 a[href="#contact-section"]' }
         ];
@@ -366,7 +367,7 @@
                 box.style.visibility = "visible";
             });
 
-            gsap.fromTo(".skill-box", { y: 100, opacity: 0 }, {
+            gsap.fromTo("#main3 .skill-box", { y: 100, opacity: 0 }, {
                 y: 0,
                 opacity: 1,
                 duration: 1,
@@ -410,6 +411,46 @@
                     toggleActions: "play reverse play reverse"
                 }
             });
+        }
+
+        // CERTIFICATIONS SECTION
+        if (exists("#certifications-section")) {
+            gsap.from("#certifications-section h2", {
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#certifications-section",
+                    start: "top 95%",
+                    end: "bottom top",
+                    toggleActions: "play reverse play reverse"
+                }
+            });
+
+            const certCards = Array.from(document.querySelectorAll("#certifications-section .skill-box"));
+            if (certCards.length) {
+                certCards.forEach((card, i) => {
+                    card.style.opacity = "1";
+                    card.style.visibility = "visible";
+                    gsap.fromTo(card,
+                        { y: 80, opacity: 0 },
+                        {
+                            y: 0,
+                            opacity: 1,
+                            duration: 0.8,
+                            delay: i * 0.06,
+                            ease: "power2.out",
+                            scrollTrigger: {
+                                trigger: card,
+                                start: "top 98%",
+                                end: "bottom top",
+                                toggleActions: "play reverse play reverse"
+                            }
+                        }
+                    );
+                });
+            }
         }
 
         // RESUME SECTION
