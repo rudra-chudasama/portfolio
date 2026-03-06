@@ -257,32 +257,41 @@
             { sel: ".project-card", opts: {} }
         ]);
 
-        // ── CERTIFICATIONS — cards reuse .skill-box but scoped to the section
+        // ── CERTIFICATIONS — each card gets its own trigger so viewport cards always animate
         if (exists("#certifications-section")) {
             gsap.from("#certifications-section h2", {
                 y: 80, opacity: 0, duration: 1, ease: "power2.out",
-                scrollTrigger: st("#certifications-section")
+                scrollTrigger: {
+                    trigger: "#certifications-section",
+                    start: "top 95%",
+                    end: "bottom top",
+                    toggleActions: "play reverse play reverse",
+                }
             });
 
             const certCards = $$("#certifications-section .skill-box");
             if (certCards.length) {
-                // Make sure they start invisible for animation
-                certCards.forEach(b => { b.style.opacity = "0"; b.style.visibility = "visible"; });
-                gsap.fromTo(certCards,
-                    { y: 80, opacity: 0 },
-                    {
-                        y: 0, opacity: 1,
-                        duration: 0.9,
-                        stagger: 0.08,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: "#certifications-section",
-                            start: sectionStart,
-                            end: "bottom top",
-                            toggleActions: "play reverse play reverse",
+                certCards.forEach((card, i) => {
+                    // Reset to visible — each card triggers independently
+                    card.style.opacity   = "1";
+                    card.style.visibility = "visible";
+
+                    gsap.fromTo(card,
+                        { y: 60, opacity: 0 },
+                        {
+                            y: 0, opacity: 1,
+                            duration: 0.7,
+                            delay: i * 0.06,
+                            ease: "power2.out",
+                            scrollTrigger: {
+                                trigger: card,          // each card is its own trigger
+                                start: "top 98%",       // fires as soon as card enters viewport
+                                end: "bottom top",
+                                toggleActions: "play reverse play reverse",
+                            }
                         }
-                    }
-                );
+                    );
+                });
             }
         }
 
