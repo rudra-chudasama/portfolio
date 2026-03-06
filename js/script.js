@@ -310,7 +310,33 @@
         console.log("GSAP animations initialized ✓");
     }
 
-  
+    /* ---------------------------
+       CODE PROTECTION
+    ----------------------------*/
+    function initCodeProtection() {
+        document.addEventListener('contextmenu', e => { e.preventDefault(); return false; });
+        document.addEventListener('selectstart', e => { e.preventDefault(); return false; });
+        document.addEventListener('dragstart',   e => { e.preventDefault(); return false; });
+
+        document.addEventListener('keydown', e => {
+            if (
+                e.key === 'F12' ||
+                (e.ctrlKey && e.shiftKey && ['I','J','C','K'].includes(e.key)) ||
+                (e.ctrlKey && ['u','s','p'].includes(e.key))
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+            * { -webkit-user-select:none!important; -moz-user-select:none!important; -ms-user-select:none!important; user-select:none!important; }
+            img { -webkit-user-drag:none!important; pointer-events:none!important; }
+        `;
+        document.head.appendChild(style);
+    }
+
     /* ---------------------------
        INIT
     ----------------------------*/
